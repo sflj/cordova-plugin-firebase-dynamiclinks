@@ -39,10 +39,12 @@ public class FirebaseDynamicLinksPlugin extends ReflectiveCordovaPlugin {
 
         this.firebaseDynamicLinks = FirebaseDynamicLinks.getInstance();
         this.domainUriPrefix = this.preferences.getString("DOMAIN_URI_PREFIX", "");
+        Log.d(TAG, "Firebase Dynamic Links plugin started");
     }
 
     @Override
     public void onNewIntent(Intent intent) {
+        Log.d(TAG, "onNewIntent");
         if (dynamicLinkCallback != null) {
             respondWithDynamicLink(intent, dynamicLinkCallback);
         }
@@ -50,11 +52,13 @@ public class FirebaseDynamicLinksPlugin extends ReflectiveCordovaPlugin {
 
     @CordovaMethod
     private void getDynamicLink(CallbackContext callbackContext) {
+        Log.d(TAG, "getDynamicLink");
         respondWithDynamicLink(cordova.getActivity().getIntent(), callbackContext);
     }
 
     @CordovaMethod
     private void onDynamicLink(CallbackContext callbackContext) {
+        Log.d(TAG, "onDynamicLink");
         dynamicLinkCallback = callbackContext;
     }
 
@@ -78,18 +82,23 @@ public class FirebaseDynamicLinksPlugin extends ReflectiveCordovaPlugin {
     }
 
     private void respondWithDynamicLink(Intent intent, final CallbackContext callbackContext) {
+        Log.d(TAG, "respondWithDynamicLink");
         this.firebaseDynamicLinks.getDynamicLink(intent).continueWith(task -> {
+            Log.d(TAG, "continueWith");
             PendingDynamicLinkData data = task.getResult();
             // Hathaway code (Java version) change made to avoid a "phantom" empty deeplink
             // from clobbering a valid deeplink on first launch. Refer to ticket PRG-1613
             if ("".equals(data.getLink())) return null;
 
+            Log.d(TAG, "prepare result json");
             JSONObject result = new JSONObject();
             result.put("deepLink", data.getLink());
             result.put("clickTimestamp", data.getClickTimestamp());
             result.put("minimumAppVersion", data.getMinimumAppVersion());
+            Log.d(TAG, data.getLink());
 
             if (callbackContext != null) {
+                Log.d(TAG, "callbackContext exists");
                 PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, result);
                 pluginResult.setKeepCallback(callbackContext == dynamicLinkCallback);
                 callbackContext.sendPluginResult(pluginResult);
