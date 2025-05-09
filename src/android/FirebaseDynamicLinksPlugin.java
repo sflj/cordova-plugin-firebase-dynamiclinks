@@ -95,7 +95,7 @@ public class FirebaseDynamicLinksPlugin extends ReflectiveCordovaPlugin {
             result.put("deepLink", data.getLink());
             result.put("clickTimestamp", data.getClickTimestamp());
             result.put("minimumAppVersion", data.getMinimumAppVersion());
-            Log.d(TAG, data.getLink());
+            Log.d(TAG, data.getLink().toString());
 
             if (callbackContext != null) {
                 Log.d(TAG, "callbackContext exists");
