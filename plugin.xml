@@ -82,6 +82,7 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
     <platform name="android">
         <preference name="ANDROID_FIREBASE_BOM_VERSION" default="30.3.1" />
+        <preference name="FIREBASE_DYNAMIC_LINKS_VERSION" default="19.1.+"/>
 
         <config-file parent="/*" target="res/xml/config.xml">
             <preference name="DOMAIN_URI_PREFIX" value="https://$APP_DOMAIN_NAME$APP_DOMAIN_PATH"/>
@@ -111,8 +112,9 @@ xmlns:android="http://schemas.android.com/apk/res/android"
 
         <dependency id="cordova-support-android-plugin" version="~2.0.4" />
 
-        <framework src="platform('com.google.firebase:firebase-bom:$ANDROID_FIREBASE_BOM_VERSION')" />
-        <framework src="com.google.firebase:firebase-dynamic-links" />
+<!--         <framework src="platform('com.google.firebase:firebase-bom:$ANDROID_FIREBASE_BOM_VERSION')" /> -->
+<!--         <framework src="com.google.firebase:firebase-dynamic-links" /> -->
+        <framework src="com.google.firebase:firebase-dynamic-links:$FIREBASE_DYNAMIC_LINKS_VERSION" />
     </platform>
 
 </plugin>
